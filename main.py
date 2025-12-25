@@ -9,7 +9,6 @@ MONTHS = 24
 
 
 def monthly_ohlc(g):
-    g = g.sort_values('date').set_index('date')
     m = g.resample('MS').agg({
         'open': 'first',
         'close': 'last', 
@@ -28,6 +27,7 @@ def monthly_ohlc(g):
 
 def run(path, out_dir=OUT_DIR):
     df = pd.read_csv(path, parse_dates=['date'])
+    df = df.sort_values(['ticker', 'date']).set_index('date')
     print(f"loaded {len(df)} rows")
     
     Path(out_dir).mkdir(exist_ok=True)
